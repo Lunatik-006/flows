@@ -4,9 +4,16 @@ set -e
 # === 1.1  Обновляем систему и ставим драйвер + CUDA ===
 sudo apt update && sudo apt -y upgrade
 # Добавили git-lfs и libopenmpi-dev для Git Large File Storage и распределённого бекенда
-sudo apt -y install nvidia-driver-535 cuda-drivers build-essential git rsync wget curl git-lfs libopenmpi-dev
-# Перезагрузка драйвера требуется один раз
-sudo reboot
+# Добавляем репозиторий NVIDIA
+wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2404/x86_64/cuda-ubuntu2004.pin
+sudo mv cuda-ubuntu2004.pin /etc/apt/preferences.d/cuda-repository-pin-600
+
+# Указываем версию Ubuntu (здесь пример для Ubuntu 20.04 — замените при необходимости!)
+sudo apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2404/x86_64/3bf863cc.pub
+sudo add-apt-repository "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2404/x86_64/ /"
+
+sudo apt update
+sudo apt -y install cuda-drivers-535 build-essential git rsync wget curl git-lfs libopenmpi-dev
 
 # --------------------------------------------
 # === 1.2  Устанавливаем Miniconda ===
@@ -38,3 +45,5 @@ if [ ! -d deepseek-coder-6.7b-base ]; then
 fi
 # ~13 ГБ в FP16; убедитесь, что хватит места на /opt
 echo "[MASTER] Подготовка завершена. При необходимости перезагрузите машину."
+# Перезагрузка драйвера требуется один раз
+sudo reboot

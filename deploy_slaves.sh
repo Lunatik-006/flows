@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-MASTER=192.168.0.10
-SLAVES=(192.168.0.11 192.168.0.12 192.168.0.13)
+MASTER=192.168.31.160
+SLAVES=(192.168.31.227 192.168.31.236 192.168.0.59)
 
 echo "[MASTER] Копируем install_slave.sh на все узлы"
 for host in "${SLAVES[@]}"; do
